@@ -1,0 +1,41 @@
+{
+    "assets": {
+        "audio": {
+            "schemes": {
+                "data": "https://cdn.kidoju.com/"
+            }
+        },
+        "image": {
+            "schemes": {
+                "data": "https://cdn.kidoju.com/"
+            }
+        },
+        "video": {
+            "schemes": {
+                "data": "https://cdn.kidoju.com/"
+            }
+        }
+    },
+    "debug": false,
+    "express": {
+        "port": 3000
+    },
+    "facebook": {
+        "clientID": "892459787527630"
+    },
+    "level": 2,
+    "twitter": {
+        "account": "kidoju"
+    },
+    "uris": {
+        "rapi": {
+            "root": "https://www.kidoju.com"
+        },
+        "webapp": {
+            "root": "https://www.kidoju.com"
+        },
+        "webpack": {
+            "root": "./build/"
+        }
+    }
+}

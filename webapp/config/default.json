@@ -1,0 +1,279 @@
+{
+    "application": {
+        "name": "Kidoju.Webapp",
+        "scheme": "com.kidoju.webapp",
+        "siteName": "Kidoju"
+    },
+    "assets": {
+        "audio": {
+            "collections": [
+                {
+                    "source": "summary"
+                }
+            ],
+            "extensions": [".mp3", ".ogg"],
+            "schemes": {
+                "cdn": "https://cdn.kidoju.com/"
+            }
+        },
+        "icon": {
+            "collections": [
+                {
+                    "name": "Icons",
+                    "transport": {
+                        "read": "https://cdn.kidoju.com/images/o_collection/svg/office/index.json"
+                    }
+                }
+            ],
+            "extensions": [".svg"],
+            "schemes": {
+                "cdn": "https://cdn.kidoju.com/"
+            }
+        },
+        "image": {
+            "collections": [
+                {
+                    "source": "summary"
+                },
+                {
+                    "name": "Icons",
+                    "collections": [
+                        {
+                            "name": "Twemoji",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/twemoji/svg/all/index.json"
+                            }
+                        },
+                        {
+                            "name": "G-Collection",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/g_collection/svg/all/index.json"
+                            }
+                        },
+                        {
+                            "name": "O-Collection",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/o_collection/svg/office/index.json"
+                            }
+                        },
+                        {
+                            "name": "V-Collection",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/v_collection/png/128x128/index.json"
+                            }
+                        },
+                        {
+                            "name": "X-Collection",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/x_collection/png/128x128/index.json"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Cliparts",
+                    "collections": [
+                        {
+                            "name": "Nature",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/cliparts/nature/index.json"
+                            }
+                        },
+                        {
+                            "name": "People",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/cliparts/people/index.json"
+                            }
+                        },
+                        {
+                            "name": "Scenery",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/cliparts/scenery/index.json"
+                            }
+                        },
+                        {
+                            "name": "Things",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/cliparts/things/index.json"
+                            }
+                        },
+                        {
+                            "name": "Miscellaneous",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/cliparts/miscellaneous/index.json"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Common",
+                    "collections": [
+                        {
+                            "name": "Lines",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/common/lines/index.json"
+                            }
+                        },
+                        {
+                            "name": "Shapes",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/common/shapes/index.json"
+                            }
+                        },
+                        {
+                            "name": "Miscellaneous",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/common/miscellaneous/index.json"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Games",
+                    "collections": [
+                        {
+                            "name": "Cards",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/games/cards/index.json"
+                            }
+                        },
+                        {
+                            "name": "Miscellaneous",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/games/miscellaneous/index.json"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Mathematics",
+                    "collections": [
+                        {
+                            "name": "Number",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/number/index.json"
+                            }
+                        },
+                        {
+                            "name": "Ratio",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/ratio/index.json"
+                            }
+                        },
+                        {
+                            "name": "Measurement",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/measurement/index.json"
+                            }
+                        },
+                        {
+                            "name": "Geometry",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/geometry/index.json"
+                            }
+                        },
+                        {
+                            "name": "Statistics",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/statistics/index.json"
+                            }
+                        },
+                        {
+                            "name": "Miscellaneous",
+                            "transport": {
+                                "read": "https://cdn.kidoju.com/images/mathematics/miscellaneous/index.json"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "source": "websearch",
+                    "params": {
+                        "provider": "google",
+                        "searchType": "image",
+                        "pageSize": 10
+                    }
+                }
+            ],
+            "extensions": [".gif", ".jpg", ".png", ".svg"],
+            "schemes": {
+                "cdn": "https://cdn.kidoju.com/"
+            }
+        },
+        "video": {
+            "collections": [
+                {
+                    "source": "summary"
+                }
+            ],
+            "extensions": [".mp4", ".ogv", ".wbem"],
+            "schemes": {
+                "cdn": "https://cdn.kidoju.com/"
+            }
+        }
+    },
+    "awss3": {
+        "region": "us-east-1",
+        "config": {
+            "bucket": "kidoju.config",
+            "key": "kidoju.webapp/production.json"
+        }
+    },
+    "head" : "<meta name=\"p:domain_verify\" content=\"00a8ab216c21a6cd727d5d50881ceb1e\"/>",
+    "images": ["https://cdn.kidoju.com/kidoju/home1.jpg", "https://cdn.kidoju.com/kidoju/home2.jpg", "https://cdn.kidoju.com/kidoju/home3.jpg"],
+    "locales" : [ "en", "fr" ],
+    "slack": {
+        "webhook": "https://hooks.slack.com/services/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"
+    },
+    "uris" : {
+        "amp": {
+            "home": "/amp",
+            "finder": "/amp/%s",
+            "summary": "/amp/%s/s/%s",
+            "user": "/amp/%s/u/%s"
+        },
+        "cdn": {
+            "root":  "https://cdn.kidoju.com",
+            "icons": "/images/o_collection/svg/office/%s.svg",
+            "images": "/kidoju/%s"
+        },
+        "help": {
+            "root":  "https://help.kidoju.com"
+        },
+        "mobile": {
+            "icons": "./img/icons/%s.svg",
+            "pictures": "%susers/%s"
+        },
+        "rapi": {
+            "logger": "/api/logger",
+            "v1": {
+                "activities": "/api/v1/%s/summaries/%s/activities",
+                "files": "/api/v1/%s/summaries/%s/files",
+                "summary": "/api/v1/%s/summaries/%s",
+                "summaries": "/api/v1/%s/summaries",
+                "user": "/api/v1/users/%s"
+            },
+            "web": {
+                "search": "/api/web/search/%s"
+            }
+        },
+        "webapp": {
+            "editor": "/%s/e/%s/%s",
+            "error": "/%s/error",
+            "finder": "/%s",
+            "home": "/",
+            "locale": "/%s",
+            "logger": "/logger",
+            "ping": "/ping",
+            "player": "/%s/x/%s/%s/%s",
+            "proxy": "/proxy",
+            "public": "/%s",
+            "rss": "/%s/rss/%s",
+            "sitemap": "/%s/sitemap/%s",
+            "summary": "/%s/s/%s",
+            "support": "/support/%s",
+            "user": "/%s/u/%s",
+            "workerlib": "workerlib.bundle.js"
+        }
+    }
+}

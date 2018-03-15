@@ -1,0 +1,357 @@
+/**********************************************************************
+ * app.template.less is for all common kendo UI styles (not app specific)
+ **********************************************************************/
+
+//---------------------------------------------
+// Navbar
+.km-navbar {
+    height: 3rem; // We need this because we want the navbar in the drawer to be the same size as the navbar in the main pain
+}
+//---------------------------------------------
+// The body tag
+.km-pane {
+    //---------------------------------------------
+    // Fonts as in Nova theme
+    .km-light-font {
+        font-weight: 300;
+    }
+
+    .km-medium-font {
+        font-weight: 500;
+    }
+
+    .km-bold-font {
+        font-weight: bold;
+    }
+    /**********************************************************
+     * Drawer
+     **********************************************************/
+    .km-drawer {
+        // Logo color
+        .km-navbar {
+            background-color: @app-drawer-navbar-background;
+            color: @app-drawer-navbar-color;
+            .km-view-title {
+                text-align: left;
+                margin-left: .5em;
+                #logo > g:first-child > path {
+                    fill: @app-drawer-logo-color;
+                    stroke: @app-drawer-logo-color;
+                }
+            }
+        }
+        // Drawer menu colors
+        .km-content,
+        .km-list > li {
+            background-color: @app-drawer-content-background;
+            color: @app-drawer-content-color;
+            .km-listview-link {
+                // Allow some space between icons and text
+                &>.km-icon {
+                    margin-right: .3em;
+                }
+                // > Should have the same color has text
+                &:after {
+                    color: inherit;
+                }
+            }
+        }
+        .km-scroll-container {
+            // Make sure drawer items are aligned to the top especially with nova theme */
+            display: initial;
+            >a[href="#user"] {
+                padding: 0 .75em;
+                line-height: 4em;
+                text-decoration: none;
+                .km-icon {
+                    // border-radius: 50%;
+                    height: 32px;
+                    width: 32px;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    /**********************************************************
+     * Navbar
+     **********************************************************/
+    .km-navbar {
+        background-color: @app-layout-navbar-background;
+        color: @app-layout-navbar-color;
+        // Navbar view title
+        .km-view-title {
+            background-color: transparent;
+        }
+        // Navbar buttons
+        .km-button {
+            background-color: @app-layout-navbar-button-background;
+            color: @app-layout-navbar-button-color;
+            border: @app-layout-navbar-button-border;
+            margin: @app-layout-navbar-button-margin;
+            padding: @app-layout-navbar-button-padding;
+            .km-icon.km-notext {
+                // font-size: 1em;
+                margin: 0;
+            }
+        }
+    }
+    /**********************************************************
+     * Listview
+     **********************************************************/
+    // ListView filters and search boxes
+    .km-filter-form {
+        box-sizing: border-box; // We need this otherwise padding adds to the 100% width
+        padding: 0.75em 1.1em;
+        .k-dropdown {
+            margin-top: 0; // Set category dropdown within padding
+            line-height: 1.4em; // Matches line-height in `.km-list .k-dropdown`)
+            width: 100%; // ATTENTION! This prevents teh popup to display in android-black and android-light themes
+        }
+        input, .k-input {
+            font-size: @app-form-filter-font-size;
+        }
+    }
+    .km-listview.km-list,   // without grouping
+    .km-listview .km-list { // with grouping
+        // TODO ellipsis on finder list
+        .offline {
+            background-color: @alt-background-color;
+        }
+        .small {
+            .left {
+                color: @disabled-text-color;
+            }
+        }
+        .km-badge-error {
+            background-color: @notification-error-background-color !important;
+            border-color: @notification-error-text-color !important;
+            color: @notification-error-text-color !important;
+        }
+        .km-badge-info {
+            background-color: @notification-info-background-color !important;
+            border-color: @notification-info-text-color !important;
+            color: @notification-info-text-color !important;
+        }
+        .km-badge-success {
+            background-color: @notification-success-background-color !important;
+            border-color: @notification-success-text-color !important;
+            color: @notification-success-text-color !important;
+        }
+        .km-badge-warning {
+            background-color: @notification-warning-background-color !important;
+            border-color: @notification-warning-text-color !important;
+            color: @notification-warning-text-color !important;
+        }
+    }
+    .error {
+        background-color: @notification-error-background-color !important;
+        color: @notification-error-text-color !important;
+    }
+    .info {
+        background-color: @notification-info-background-color !important;
+        color: @notification-info-text-color !important;
+    }
+    .success {
+        background-color: @notification-success-background-color !important;
+        color: @notification-success-text-color !important;
+    }
+    .warning {
+        background-color: @notification-warning-background-color !important;
+        color: @notification-warning-text-color !important;
+    }
+    /**********************************************************
+    * Forms
+    **********************************************************/
+    form {
+        .km-listview.km-list {
+            li {
+                min-height: 2.8em; // When fields are empty
+            }
+            // values shifted right
+            .right {
+                appearance: none;
+                font-size: 1em;
+                margin-left: @app-form-right-margin-left;
+                margin-top: @app-form-right-margin-top;
+                min-width: 6em;
+                padding: .4em;
+                width: @app-form-right-width;
+            }
+            // User PIN
+            input {
+                padding-left: @app-form-input-padding-left;
+            }
+            // Align settings dropdowns with span.k-input
+            span.k-dropdown {
+                font-size: 1em;
+                margin-top: @app-form-dropdown-margin-top;
+                span.k-dropdown-wrap {
+                    font-size: inherit;
+                    padding-left: @app-form-dropdown-padding-left;
+                    span.k-input {
+                        text-indent: @app-form-dropdown-text-indent;
+                    }
+                }
+            }
+
+        }
+    }
+    /**********************************************************
+    * Buttons
+    **********************************************************/
+    .buttons {
+        margin: 1em;
+        .km-button {
+            display: block;
+            width: auto !important; // We also need this otherwise padding adds to the 100% width
+        }
+        .km-button:not(:last-child) {
+            margin-bottom: 1em;
+        }
+    }
+    .km-button.km-primary {
+        // This is for primary buttons which are missing
+        background-color: @app-primary-background !important;
+        border-color: @app-primary-border-color !important;
+        color: @app-primary-text-color !important;
+    }
+    /*
+    .km-button > .km-icon,
+    .km-listview-link > .km-icon {
+        // Allow some space between icons and text
+        margin: 0 .7em 0 .3em;
+        // Reduce and align icon size
+        font-size: 1.25em;
+        vertical-align: top;
+    }
+    */
+    /**********************************************************
+    * Tour
+    **********************************************************/
+    .k-scrollview.km-scrollview {
+        div[data-role="page"] {
+            div.text {
+                background-color: @app-tour-background-color;
+                border-color: @app-tour-border-color;
+            }
+        }
+        ol.k-pages.km-pages {
+            background-color: @app-tour-background-color;
+        }
+    }
+}
+//---------------------------------------------
+// Listview filter
+.km-tablet {
+    .km-filter-wrap {
+        max-width: none; // was 24em;
+    }
+}
+//---------------------------------------------
+// Animation containers
+/*
+.k-animation-container {
+    // This is for dropdown popups to match actionsheet popups
+    .k-list-container {
+        .k-list-scroller {
+            .k-list {
+                font-size: @app-list-container-font-size;
+            }
+        }
+    }
+}
+ */
+.km-shim.km-actionsheet-root, // This ensures action-sheets use the body font-family considering copyAnchorStyles overrides the style property (search kendo.popup.js)
+.k-list-container.k-popup {   // This is for mobile form dropdowns
+    // This is for dropdown popups to match actionsheet popups considering dropdowns copy styles form their anchor
+    font-family: inherit;
+    font-size: @app-list-container-font-size;
+    font-weight: inherit;
+    .k-item, li>a {
+        font-size: initial;
+        font-weight: initial;
+    }
+}
+//---------------------------------------------
+// Notifications
+.km-view {
+    .k-notification {
+        // This is for static notifications in a .km-view
+        // like on the signin screen with a list of providers
+        margin: 1em;
+        display: block;
+        opacity: 1;
+    }
+}
+.k-notification-wrap {
+    // This wraps all notifications when text is too wide
+    width: 100%;
+    white-space: normal;
+    .k-icon {
+        float:left;
+    }
+    .k-text {
+        display:block;
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
+}
+/*********************************************************************************************
+* Stage
+**********************************************************************************************/
+.kj-stage {
+    // On touch devices, a tap triggers a :hover state but does not remove it
+    // It is not possible to remove this :hover state via JavaScript
+    // @see https://css-tricks.com/annoying-mobile-double-tap-link-issue/
+    // @see http://www.javascriptkit.com/dhtmltutors/sticky-hover-issue-solutions.shtml
+    // So we need to match the :hover state to the :active state in cordova apps
+    .k-button:hover {
+        background-color: @button-active-background;
+        border-color: @button-active-border-color;
+        color: @button-active-text-color;
+        .composite-background(@button-active-gradient);
+        .box-shadow(@button-active-shadow);
+    }
+}
+/*
+.k-animation-container {
+    .k-list-container {
+        .k-list-scroller {
+            .k-list > li.k-state-focused {
+                // This makes labels of focused/selected list items visible in the popup of stage drop down lists
+                text-indent: initial;
+            }
+        }
+    }
+}
+*/
+/*********************************************************************************************
+* InAppBrowser (TODO)
+**********************************************************************************************/
+
+/*
+.inAppBrowserWrap {
+    background-color: rgba(0,0,0,0.75);
+    color: rgba(235,235,235,1.0);
+}
+.inAppBrowserWrap menu {
+    overflow: auto;
+    list-style-type: none;
+    padding-left: 0;
+}
+.inAppBrowserWrap menu li {
+    font-size: 25px;
+    height: 25px;
+    float: left;
+    margin: 0 10px;
+    padding: 3px 10px;
+    text-decoration: none;
+    color: #ccc;
+    display: block;
+    background: rgba(30,30,30,0.50);
+}
+.inAppBrowserWrap menu li.disabled {
+    color: #777;
+}
+*/
+
