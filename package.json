@@ -113,5 +113,11 @@
       "windows",
       "android"
     ]
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "config": {
+    "msvs_version": "2015"
   }
 }
