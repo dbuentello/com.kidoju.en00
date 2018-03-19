@@ -47,12 +47,12 @@
          */
         app.constants = {
             // The mobile application id corresponding to the app scheme in mongoDB
-            appId: '5aa7b81cb706873118ffb5b4',
+            appId: '5aa7b81cb706873118ffb5b5',
             // The application name
             appName: 'Kidoju',
             // TODO: logo to display in drawer...
             // The application scheme
-            appScheme: 'com.kidoju.mobile',
+            appScheme: 'com.kidoju.en00',
             // For app store ratings
             appStoreUrl: {
                 // TODO: these are all for testing with the twitter app
@@ -84,12 +84,12 @@
             // Help system
             helpUrl: 'https://help.kidoju.com/', // TODO Add Mobile section
             // The authorId to search summaries from (until we support organizationId)
-            authorId: undefined, // '56d6ee31bc039c1a00062950',
+            authorId: '56d6ee31bc039c1a00062950',
             // The app language
-            language: undefined, // 'fr',
+            language: 'en', // 'fr',
             // The root categoryId
             rootCategoryId: {
-                en: undefined,
+                en: '000100020000000000000000',
                 // en: '000100010000000000000000', // General Knowledge
                 // en: '000100020000000000000000', // Reception
                 // en: '000100030000000000000000', // Year 1
