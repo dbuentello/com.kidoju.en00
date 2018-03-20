@@ -50,6 +50,53 @@ module.exports = function (grunt) {
                 dest: './www/build/workerlib.bundle.js'
             }
         },
+        jscs: {
+            files: ['gruntfile.js', 'webpack.config.js', 'js/**/app.*.js', 'js/**/*.jsx', 'webapp/**/*.js', 'test/**/*.js'],
+            options: {
+                config: '.jscsrc',
+                excludeFiles: ['js/kidoju.*.js', 'js/vendor/**/*.js', 'webapp/public/**/*.js', 'test/vendor/**/*.js']
+            }
+        },
+        jshint: {
+            all: ['gruntfile.js', 'webpack.config.js', 'js/**/app.*.js', 'js/**/*.jsx', 'webapp/**/*.js', 'test/**/*.js'],
+            ignores: ['js/kidoju.*.js', 'js/vendor/**/*.js', 'webapp/public/**/*.js', 'test/vendor/**/*.js'],
+            options: {
+                jshintrc: true
+            }
+        },
+        // TODO karma
+        /*
+        kendo_lint: {
+            files: ['src/js/app*.js']
+        },
+        */
+        // TODO: lint html too
+        mocha: {
+            browser: { // In browser (phantomJS) unit tests
+                options: {
+                    log: true,
+                    logErrors: true,
+                    reporter: 'Spec',
+                    run: true,
+                    timeout: 5000
+                },
+                src: ['test/browser/**/*.html']
+            }
+        },
+        mochaTest: { // In node (Zombie) unit tests
+            node: {
+                options: {
+                    quiet: false,
+                    reporter: 'spec',
+                    timeout: 10000,
+                    ui: 'bdd'
+                },
+                src: ['test/node/**/*.js']
+            }
+        },
+        nsp: {
+            package: grunt.file.readJSON('package.json')
+        },
         uglify: {
             build: {
                 options: {
@@ -61,6 +108,14 @@ module.exports = function (grunt) {
                 files: {
                     'webapp/public/build/workerlib.bundle.js': ['js/kidoju.data.workerlib.js']
                 }
+            }
+        },
+        webdriver: { // Selenium functional tests
+            appium: {
+                configFile: './wdio.appium.conf.js'
+            },
+            selenium: {
+                configFile: './wdio.selenium.conf.js'
             }
         },
         webpack: {
@@ -91,11 +146,22 @@ module.exports = function (grunt) {
 
     // Load npm tasks
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-jscs');
+    // grunt.loadNpmTasks('grunt-kendo-lint');
+    grunt.loadNpmTasks('grunt-mocha');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-nsp');
+    grunt.loadNpmTasks('grunt-webdriver');
     grunt.loadNpmTasks('grunt-webpack');
 
 
     // Commands
+    grunt.registerTask('lint', ['jscs', 'jshint', 'nsp']); // 'kendo_lint']);
     grunt.registerTask('build', ['webpack:build', 'uglify:build', 'copy']);
+    // grunt.registerTask('test', ['mocha', 'mochaTest', 'webdriver']);
+    grunt.registerTask('test', ['mocha', 'mochaTest']);
+    grunt.registerTask('default', ['lint', 'build', 'test']);
 
 };
