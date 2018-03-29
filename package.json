@@ -106,7 +106,7 @@
     "cordova-windows": "^6.0.0",
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-barcodescanner": "^7.1.0",
-    "phonegap-plugin-speech-synthesis": "https://github.com/macdonst/SpeechSynthesisPlugin.git"
+    "phonegap-plugin-speech-synthesis": "https://github.com/macdonst/SpeechSynthesisPlugin"
   },
   "cordova": {
     "plugins": {
@@ -131,14 +131,14 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "CAMERA_USAGE_DESCRIPTION": "Scan QR Codes"
       },
-      "phonegap-plugin-speech-synthesis": {},
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "phonegap-plugin-speech-synthesis": {}
     },
     "platforms": [
       "android",
       "browser",
-      "windows",
-      "ios"
+      "ios",
+      "windows"
     ]
   },
   "engines": {

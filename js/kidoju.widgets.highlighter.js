@@ -281,15 +281,14 @@
                     ret.push(selection);
                 }
                 this._value = ret;
-                this.trigger(CHANGE);
             },
 
             /**
-             * Substract a new selection and possibly break adjoining selections
+             * Remove a new selection and possibly break adjoining selections
              * @param selection
              * @private
              */
-            _sub: function (selection) {
+            _remove: function (selection) {
                 // This is always a selection across all spans, whether breaking the sentence into words or characters
                 assert.isPlainObject(selection, assert.format(assert.messages.isPlainObject.default, 'selection'));
                 assert.type(NUMBER, selection.start, assert.format(assert.messages.type.default, 'selection.start', NUMBER));
@@ -327,7 +326,6 @@
                     }
                 }
                 this._value = ret;
-                this.trigger(CHANGE);
             },
 
             /**
@@ -368,13 +366,56 @@
              * @param enable
              */
             enable: function (enable) {
-                enable = $.type(enable) === UNDEFINED ? true : !!enable;
+                this._enabled = $.type(enable) === UNDEFINED ? true : !!enable;
                 this.element.off(NS);
-                if (enable) {
+                if ($.isFunction(this._onMouseUpHandler)) {
+                    $(document).off(NS, this._onMouseUpHandler);
+                    this._onMouseUpHandler = undefined;
+                }
+                if (this._enabled) {
+                    var data = {}; // Data to share across events
+                    // IMPORTANT: touchmove and touchend target is the same element that received the touchstart event
+                    // corresponding to the touch point, even if the touch point has moved outside that element.
+                    // See https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent
+                    // So events cannot be delegated to spans to know which span to highlight
                     this.element
-                        .on(MOUSEDOWN + NS + ' ' + TOUCHSTART + NS, SPAN_SELECTOR, this._onMouseDown.bind(this))
-                        .on(MOUSEMOVE + NS + ' ' + TOUCHMOVE + NS, SPAN_SELECTOR, this._onMouseMove.bind(this))
-                        .on(MOUSEUP + NS + ' ' + TOUCHEND + NS, SPAN_SELECTOR, this._onMouseUp.bind(this));
+                        .on(MOUSEDOWN + NS + ' ' + TOUCHSTART + NS, data, this._onMouseDown.bind(this))
+                        .on(MOUSEMOVE + NS + ' ' + TOUCHMOVE + NS, data, this._onMouseMove.bind(this));
+                    // We need mouseup on the document to clean our data wherever the pointer is
+                    this._onMouseUpHandler = this._onMouseUp.bind(this);
+                    $(document)
+                        .on(MOUSEUP + NS + ' ' + TOUCHEND + NS, data, this._onMouseUpHandler);
+                }
+            },
+
+            /**
+             * Get span from event
+             * @param e
+             * @private
+             */
+            _spanFromEvent: function (e) {
+                var originalEvent = e.originalEvent;
+                var clientX;
+                var clientY;
+                if (originalEvent && originalEvent.touches && originalEvent.touches.length) {
+                    clientX = originalEvent.touches[0].clientX;
+                    clientY = originalEvent.touches[0].clientY;
+                } else if (originalEvent && originalEvent.changedTouches && originalEvent.changedTouches.length) {
+                    // See http://www.jacklmoore.com/notes/mouse-position/
+                    // See http://www.jqwidgets.com/community/topic/dragend-event-properties-clientx-and-clienty-are-undefined-on-ios/
+                    // See http://www.devinrolsen.com/basic-jquery-touchmove-event-setup/
+                    // ATTENTION: e.originalEvent.changedTouches instanceof TouchList, not Array
+                    clientX = originalEvent.changedTouches[0].clientX;
+                    clientY = originalEvent.changedTouches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                if ($.type(clientX) === NUMBER && $.type(clientY) === NUMBER) {
+                    var span = $(document.elementFromPoint(clientX, clientY));
+                    if (span.is(SPAN_SELECTOR) && $.contains(this.element.get(0), span.get(0))) {
+                        return span;
+                    }
                 }
             },
 
@@ -384,18 +425,27 @@
              * @private
              */
             _onMouseDown: function (e) {
-                var target = $(e.target);
-                var index = this.items.index(target);
-                this._action = {
-                    active: !target.hasClass(ACTIVE_SELECTOR.substr(1)),
-                    initial: index,
-                    // This is always a selection across all spans, including spaces and punctuation
-                    selection: {
-                        // possibly we get end < start, and we do not have a selection
-                        start: this._roundUp(index),
-                        end: this._roundDown(index)
+                if (e.type === MOUSEDOWN && e.data && e.data.touched) {
+                    // A tap triggers touchstart/touchend but also mousedown/mouseup which we do not want to execute twice
+                    return;
+                } else if ((e.data) && ($.type(e.data.initial) === UNDEFINED)) {
+                    var target = this._spanFromEvent(e);
+                    if (target instanceof $) {
+                        // console.log(e.type);
+                        var index = this.items.index(target);
+                        // We cannot reassign e.data because we need the same object throughout mouse/touch events
+                        e.data.active = !target.hasClass(ACTIVE_SELECTOR.substr(1));
+                        e.data.highlighter = this;
+                        e.data.initial = index;
+                        // This is always a selection across all spans, including spaces and punctuation
+                        e.data.selection = {
+                            // possibly we get end < start, and we do not have a selection
+                            start: this._roundUp(index),
+                            end: this._roundDown(index)
+                        };
+                        e.data.touched = (e.type === TOUCHSTART);
                     }
-                };
+                }
             },
 
             /**
@@ -404,45 +454,60 @@
              * @private
              */
             _onMouseMove: function (e) {
-                if (this._action) {
-                    var target = $(e.target);
-                    var index = this.items.index(target);
-                    // Make sure we can work both ways (right and left from initial mousedown)
-                    if (index < this._action.initial) {
-                        // We are selecting towards the left
-                        this._action.selection.start = this._roundUp(index);
-                        this._action.selection.end = this._roundDown(this._action.initial);
-                    } else {
-                        // We are selecting towards the right
-                        this._action.selection.start = this._roundUp(this._action.initial);
-                        this._action.selection.end = this._roundDown(index);
+                if ((e.data) && (e.data.highlighter === this)) { // same originating widget in case there are more on the page
+                    var target = this._spanFromEvent(e);
+                    if (target instanceof $) {
+                        // console.log(e.type);
+                        var index = this.items.index(target);
+                        // Make sure we can work both ways (right and left from initial mousedown)
+                        if (index < e.data.initial) {
+                            // We are selecting towards the left
+                            e.data.selection.start = this._roundUp(index);
+                            e.data.selection.end = this._roundDown(e.data.initial);
+                        } else {
+                            // We are selecting towards the right
+                            e.data.selection.start = this._roundUp(e.data.initial);
+                            e.data.selection.end = this._roundDown(index);
+                        }
+                        // This is always a selection across all spans, including spaces and punctuation
+                        this._highlight(e.data.selection, e.data.active, true);
                     }
-                    // This is always a selection across all spans, including spaces and punctuation
-                    this._highlight(this._action.selection, this._action.active, true);
                 }
             },
 
             /**
              * Mouseup event handler
+             * The mouseup event handler is shared across widgets and cannot use this
              * @param e
              * @private
              */
             _onMouseUp: function (e) {
-                this._onMouseMove(e);
-                // Unselect text to show highlight
-                var selection = window.getSelection();
-                selection.removeAllRanges();
-                // Store the selection and trigger a change event to refresh the UI
-                if (this._action.active) {
-                    this._add(this._action.selection);
-                } else {
-                    this._sub(this._action.selection);
+                if (e.type === MOUSEUP && e.data && e.data.touched) {
+                    e.data.touched = undefined;
+                    // A tap triggers touchstart/touchend but also mousedown/mouseup which we do not want to execute twice
+                    return;
+                } else if ((e.data) && (e.data.highlighter === this)) { // same originating widget in case there are more on the page
+                    // console.log(e.type);
+                    // No need to unselect to show highlight since we have CSS style user-select: none;
+                    // window.getSelection().removeAllRanges();
+                    // Add/remove current highlighting to this._value
+                    if (e.data.active) {
+                        this._add(e.data.selection);
+                    } else {
+                        this._remove(e.data.selection);
+                    }
+                    // Clear data for next time
+                    // We cannot reassign e.data because we need the same object throughout mouse/touch events
+                    e.data.active = undefined;
+                    e.data.highlighter = undefined;
+                    e.data.initial = undefined;
+                    e.data.selection = undefined;
+                    e.data.touched = (e.type === TOUCHEND);
+                    // Refresh the UI
+                    this.refresh();
+                    // Trigger a change event
+                    this.trigger(CHANGE);
                 }
-                // Action is now completed
-                this._action = undefined;
-                // Refresh th eUI
-                this.refresh();
-                this.trigger(CHANGE);
             },
 
             /* This function's cyclomatic complexity is too high. */
