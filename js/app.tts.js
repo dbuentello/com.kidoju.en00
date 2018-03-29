@@ -32,9 +32,6 @@
         var RX_IOS = /i(phone|pad|pod)/i;
         // var RX_IOS_11 = /i(phone|pad|pod) OS 11_/i;
         var voices = [];
-        var loadVoices = function () {
-            voices = window.speechSynthesis.getVoices();
-        };
 
         /* NOTES
         On Android 5 (Nexus 7), I could not get the sound from W3C Speech APIs to work before changing some Android settings I could not reproduce
@@ -44,13 +41,38 @@
         On the long term, we should be able to remove the Cordova TTS Plugin and only rely on the W3C Speech APIs
         */
 
+        function loadVoices () {
+            voices = window.speechSynthesis.getVoices() || [];
+            if (voices._list) {
+                // https://github.com/macdonst/SpeechSynthesisPlugin/issues/7
+                // https://github.com/macdonst/SpeechSynthesisPlugin/blob/master/www/SpeechSynthesisVoiceList.js
+                voices = voices._list;
+            }
+        }
+
+        function onDeviceReady () {
+            if ('speechSynthesis' in window && $.isFunction(window.speechSynthesis.getVoices)) {
+                loadVoices();
+                if ('onvoiceschanged' in window.speechSynthesis) {
+                    // Chrome loads voices asynchronously
+                    window.speechSynthesis.onvoiceschanged = loadVoices;
+                } else {
+                    // We need to attempt to load twice especially for https://github.com/macdonst/SpeechSynthesisPlugin
+                    // Because first time return 1 and second time return a SpeechSynthesisVoiceList
+                    setTimeout(loadVoices, 3000);
+                }
+            }
+        }
+
         /**
          * Load voices
          */
-        if ('speechSynthesis' in window) {
-            loadVoices();
-            // Chrome loads voices asynchronously, which means the previous might have returned an empty array
-            window.speechSynthesis.onvoiceschanged = loadVoices;
+        if (window.cordova) {
+            // This is for https://github.com/macdonst/SpeechRecognitionPlugin
+            document.addEventListener('deviceready', onDeviceReady, false);
+        } else {
+            // This is for using the W3C Speech API in any browser
+            onDeviceReady();
         }
 
         /**
@@ -82,7 +104,8 @@
          */
         tts._getVoice = function (language) {
             assert.type(STRING, language, assert.format(assert.messages.type.default, 'language', STRING));
-            var natives = voices.filter(function (voice) { return voice.lang.toLowerCase().startsWith(language.toLowerCase()); });
+            // voices might be undefined as with https://github.com/macdonst/SpeechSynthesisPlugin
+            var natives = (voices || []).filter(function (voice) { return voice.lang.toLowerCase().startsWith(language.toLowerCase()); });
             var localDefaults = natives.filter(function (voice) { return voice.default && voice.localService; });
             if (Array.isArray(localDefaults) && localDefaults.length) {
                 return localDefaults[0];
@@ -121,7 +144,7 @@
             // @see http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
             if ('chrome' in window && $.type(window.StyleMedia) === UNDEFINED) {
                 var matches = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-                var version = $.isArray(matches) && matches.length === 3 && parseInt(matches[2], 10);
+                var version = Array.isArray(matches) && matches.length === 3 && parseInt(matches[2], 10);
                 if ($.type(version) === NUMBER && version < 56) {
                     // Note: This regular expression could be improved:
                     // 1. to exclude native voices which do not fail at ~200-300 characters
@@ -157,9 +180,19 @@
             if (tts._useSpeechSynthesis()) {
                 var voice = tts._getVoice(language);
                 if (voice && voice.lang) {
-                    var utterance = new window.SpeechSynthesisUtterance(text);
-                    // utterance.lang = language; // Setting an unavailable language in Microsoft Edge breaks the speech
-                    utterance.voice = voice; // This sets the language
+                    var utterance = new window.SpeechSynthesisUtterance();
+                    utterance.text = text; // https://github.com/macdonst/SpeechSynthesisPlugin/issues/6
+                    if ('voice' in utterance) {
+                        // Standard Web Speech API
+                        utterance.voice = voice; // This sets the language
+                        // Setting an unavailable language in Microsoft Edge breaks the speech,
+                        // but hopefully we got a SpeechSynthesisVoice
+                        // utterance.lang = language;
+                    } else {
+                        // For https://github.com/macdonst/SpeechSynthesisPlugin
+                        utterance.voiceURI = voice.voiceURI;
+                        utterance.lang = voice.lang;
+                    }
                     utterance.rate = 1;
                     utterance.onend = function (evt) { // Returns a SpeechSynthesisEvent
                         if (evt.type === 'error') {
@@ -208,7 +241,7 @@
             if (tts._useCordovaPlugIn()) {
                 // For iOS and Android via TTS plugin
                 // Note: iOS UIWebView supports speechSynthesis but not Chrome 61 on Android 5.1.1 (Nexus 7)
-
+                // window.alert('TTS Plugin');
                 // navigator.notification.prompt(
                 //     'Enter a rate ' + (RX_IOS.test(window.navigator.userAgent) && !window.MSStream ? '(iOS):' : '(Not iOS):'),
                 //     function (result) {
