@@ -21,3 +21,12 @@
 # Cordova Hooks
 
 Cordova Hooks represent special scripts which could be added by application and plugin developers or even by your own build system  to customize cordova commands. See Hooks Guide for more details:  http://cordova.apache.org/docs/en/edge/guide_appdev_hooks_index.md.html#Hooks%20Guide.
+
+# Phonegap Build
+
+## Google Analytics
+
+Phonegap Build does not support Cordova Hooks, so we have forked https://github.com/danwilson/google-analytics-plugin
+at https://github.com/jlchereau/google-analytics-plugin and removed any IDFA reference from plugin.xml in
+https://github.com/danwilson/google-analytics-plugin/commit/b9605b78f182e8781e079d6e3e102dcd6196e14c
+
