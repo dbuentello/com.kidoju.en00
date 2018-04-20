@@ -71,10 +71,10 @@
                 // For Fire OS, see:
                 // https://developer.amazon.com/blogs/post/Tx3A1TVL67TB24B/Linking-To-the-Amazon-Appstore-for-Android.html
                 // 'amazon-fireos': 'amzn://apps/android?p=com.twitter.android',
-                'amazon-fireos': 'amzn://apps/android?p=com.kidoju.en00',
+                'amazon-fireos': 'amzn://apps/android?p=com.kidoju.en00'
                 // ----------------------------------------------------------------------------------------
                 // For windows (untested)
-                windows: 'ms-windows-store://pdp/?ProductId=9wzdncrfj140' // TODO
+                // windows: 'ms-windows-store://pdp/?ProductId=9wzdncrfj140' // TODO
             },
             // Google analytics
             gaTrackingId: 'UA-63281999-4',
@@ -82,6 +82,9 @@
             feedbackUrl: 'https://www.kidoju.com/support/{0}/contact?about={1}', // TODO use gitter?
             // Help system
             helpUrl: 'https://help.kidoju.com',
+            // Guideline 1.3 - Safety - Kids Category
+            // Set to false for 13+ years old
+            appleKidSafety: /iphone|ipod|ipad/i.test(window.navigator.userAgent),
             // The authorId to search summaries from (until we support organizationId)
             authorId: '56d6ee31bc039c1a00062950',
             // The app language
