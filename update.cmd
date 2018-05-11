@@ -50,7 +50,7 @@ ATTRIB -R .\*.cmd
 ATTRIB -R .\*.md
 ATTRIB -R .\*.txt
 COPY ..\..\Kidoju\Kidoju.Mobile\builds\create\excludelist.txt .\ /Y
-REM COPY ..\..\Kidoju\Kidoju.Mobile\builds\create\update.cmd .\ /Y
+COPY ..\..\Kidoju\Kidoju.Mobile\builds\create\update.cmd .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\build.cmd .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\BUILD.md .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\kidoju.server.cmd .\ /Y
