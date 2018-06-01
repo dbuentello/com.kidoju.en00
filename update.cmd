@@ -49,11 +49,13 @@ REM Copy batch files
 ATTRIB -R .\*.cmd
 ATTRIB -R .\*.md
 ATTRIB -R .\*.txt
-COPY ..\..\Kidoju\Kidoju.Mobile\builds\create\excludelist.txt .\ /Y
-COPY ..\..\Kidoju\Kidoju.Mobile\builds\create\update.cmd .\ /Y
+COPY ..\..\Kidoju\Kidoju.Mobile\builds\excludelist.txt .\ /Y
+REM Check seds below if uncommenting
+REM COPY ..\..\Kidoju\Kidoju.Mobile\builds\update.cmd .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\build.cmd .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\BUILD.md .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\kidoju.server.cmd .\ /Y
+COPY ..\..\Kidoju\Kidoju.Mobile\packages.cmd .\ /Y
 COPY ..\..\Kidoju\Kidoju.Mobile\watch.cmd .\ /Y
 ATTRIB +R .\*.cmd
 ATTRIB +R .\*.md

@@ -3,11 +3,13 @@
  * Sources at https://github.com/Memba
  */
 
+// https://github.com/benmosher/eslint-plugin-import/issues/1097
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import $ from 'jquery';
 import 'kendo.binder';
 import 'kendo.dialog';
-import CONSTANTS from '../window.constants.es6';
-// import assert from '../window.assert.es6';
+import CONSTANTS from '../common/window.constants.es6';
+// import assert from '../common/window.assert.es6';
 // const logger = new window.Logger('kidoju.widgets.messagebox');
 // const logger = { debug: $.noop }; // TODO Review
 
@@ -77,11 +79,26 @@ const BaseDialog = Dialog.extend({
                 warning: 'Warning'
             },
             actions: {
+                // TODO: replace imageUrl by icon with CDN path and buil path when using icons
                 cancel: {
                     action: 'cancel',
                     imageUrl:
                         'https://cdn.kidoju.com/images/o_collection/svg/office/close.svg',
                     text: 'Cancel'
+                },
+                close: {
+                    action: 'close',
+                    imageUrl:
+                        'https://cdn.kidoju.com/images/o_collection/svg/office/close.svg',
+                    primary: true,
+                    text: 'Close'
+                },
+                create: {
+                    action: 'create',
+                    imageUrl:
+                        'https://cdn.kidoju.com/images/o_collection/svg/office/plus.svg',
+                    primary: true,
+                    text: 'Create'
                 },
                 no: {
                     action: 'no',

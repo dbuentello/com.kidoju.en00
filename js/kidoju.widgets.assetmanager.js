@@ -9,8 +9,8 @@
 (function (f, define) {
     'use strict';
     define([
-        './window.assert',
-        './window.logger',
+        './common/window.assert.es6',
+        './common/window.logger.es6',
         './vendor/kendo/kendo.binder',
         './vendor/kendo/kendo.dropdownlist',
         './vendor/kendo/kendo.pager',
@@ -730,7 +730,7 @@
                     }
                 }
                 if (found.length) {
-                    kidoju.dialogs.openAlert({
+                    window.kidoju.dialogs.openAlert({
                         type: kendo.ui.BaseDialog.fn.type.warning,
                         title: options.messages.dialogs.confirm,
                         message: kendo.format(options.messages.dialogs.warningOverwrite, found.join('`, `'))

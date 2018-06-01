@@ -85,8 +85,8 @@ window.jQuery.holdReady(true);
         './vendor/kendo/kendo.mobile.switch',
         // './vendor/kendo/kendo.mobile.tabstrip',
         './vendor/kendo/kendo.touch',
-        './window.assert',
-        './window.logger',
+        './common/window.assert.es6',
+        './common/window.logger.es6',
         './kidoju.data',
         './kidoju.tools',
         './kidoju.widgets.chargrid',
@@ -1892,7 +1892,7 @@ window.jQuery.holdReady(true);
                 // Refreshing list views only works in data bound mode
                 // It removes the html markup especially with forms
                 var listViewElements = view.content.find(kendo.roleSelector('listview'));
-                listViewElements.each(function(index, element) {
+                listViewElements.each(function (index, element) {
                     var listViewWidget = $(element).data('kendoMobileListView');
                     if (listViewWidget instanceof kendo.mobile.ui.ListView) {
                         listViewWidget.refresh();
@@ -3369,9 +3369,9 @@ window.jQuery.holdReady(true);
                     // This cannot be done via bindings because the view and vien.content cannot be bound
                     var summary = viewModel.get(VIEW_MODEL.SUMMARY.$);
                     view.content
-                        .toggleClass('error', summary.error$())
-                        .toggleClass('success', summary.success$())
-                        .toggleClass('warning', summary.warning$());
+                        .toggleClass('error', summary.isError$())
+                        .toggleClass('success', summary.isSuccess$())
+                        .toggleClass('warning', summary.isWarning$());
                     app.notification.info(i18n.culture.notifications.summaryViewInfo);
                 });
         };

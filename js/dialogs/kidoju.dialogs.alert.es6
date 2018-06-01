@@ -1,7 +1,14 @@
+/**
+ * Copyright (c) 2013-2018 Memba Sarl. All rights reserved.
+ * Sources at https://github.com/Memba
+ */
+
+// https://github.com/benmosher/eslint-plugin-import/issues/1097
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import $ from 'jquery';
 import 'kendo.core';
 import './kidoju.widgets.basedialog.es6';
-import CONSTANTS from '../window.constants.es6';
+import CONSTANTS from '../common/window.constants.es6';
 
 const {
     template,
@@ -46,7 +53,7 @@ export default function openAlert(options = {}) {
         .data('kendoBaseDialog');
 
     // Bind the click event
-    dialog.one(CONSTANTS.CLICK, e => {
+    dialog.bind(CONSTANTS.CLICK, e => {
         dfd.resolve({ action: e.action });
     });
 
@@ -85,7 +92,6 @@ export function openYesNoAlert(options = {}) {
         })
     );
 }
-
 
 /**
  * Maintain compatibility with legacy code
