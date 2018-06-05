@@ -13,7 +13,7 @@
 const path = require('path');
 const deasync = require('deasync');
 const webpack = require('webpack');
-const cleanPlugin = require('./web_modules/less-plugin');
+const cleanPlugin = require('./web_modules/less-plugin/index.es6');
 const config = require('./webapp/config');
 const pkg = require('./package.json');
 
@@ -103,7 +103,7 @@ module.exports = {
                 test: /\.jsx/, // see ./web_modules/jsx-loader
                 use: [
                     {
-                        loader: './web_modules/jsx-loader',
+                        loader: './web_modules/jsx-loader/index.es6',
                         options: { config: 'webapp/config' }
                     }
                 ]
